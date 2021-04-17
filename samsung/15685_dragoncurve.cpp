@@ -14,7 +14,7 @@ int main() {
     int N;
     cin >> N;
 
-    bool map[100][100] = {false, };
+    bool map[101][101] = {false, };
 
     for(int i = 0; i < N; i++) {
         int x, y, d, g;
@@ -32,7 +32,8 @@ int main() {
             }
         }
 
-        for(int j = 0; j < path.size(); j++) {
+        int n = path.size();
+        for(int j = 0; j < n; j++) {
             int dir = path[j];
             
             x += dx[dir];
@@ -43,8 +44,8 @@ int main() {
 
     // Find Rect
     int cnt = 0;
-    for(int i = 0; i < 99; i++) {
-        for(int j = 0; j < 99; j++) {
+    for(int i = 0; i < 100; i++) {
+        for(int j = 0; j < 100; j++) {
             if(map[i][j] && map[i][j+1] && map[i+1][j] && map[i+1][j+1]) {
                 cnt++;
             }
