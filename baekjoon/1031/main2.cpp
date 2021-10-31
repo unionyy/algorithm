@@ -8,7 +8,7 @@ using namespace std;
 int N, M;
 int gamesN[MAX_N], gamesM[MAX_N];
 int table[MAX_N][MAX_N];
-
+int tmp[MAX_N];
 
 int main() {
     // Input
@@ -18,17 +18,19 @@ int main() {
 
     // Make Talbe
     for(int i = 0; i < N; i++) {
+        for(int j = i + 1; j < N; j++) tmp[j] = gamesN[j];
         int leftGame = gamesN[i];
         int zeroM = 0;
-        int zeroN = 0;
+        
         for(int j = 0; j < M; j++) {
             if(gamesM[j] == 0) zeroM++;
         }
-        for(int j = i + 1; j < N; j++) {
-            if(gamesN[j] == 0) zeroN++;
-        }
 
         for(int j = 0; j < M; j++) {
+            int zeroN = 0;
+            for(int j = i + 1; j < N; j++) {
+                if(tmp[j] == 0) zeroN++;
+            }
             if(leftGame == 0) {
                 table[i][j] = 0;
             }
@@ -45,6 +47,9 @@ int main() {
             else {
                 table[i][j] = 0;
             }
+
+            sort(tmp + i + 1, tmp + N, greater<int>());
+            for(int k = i + 1; k < i + 1 + gamesM[j]; k++) tmp[k]--;
         }
     }
 
@@ -77,7 +82,7 @@ int main() {
         }
     }
     else {
-        cout << "-1";
+        cout << "-1" << endl;
     }
     
 
