@@ -10,13 +10,14 @@ int gamesN[MAX_N], gamesM[MAX_N];
 int resS[MAX_N], resT[MAX_N], res[MAX_N][MAX_N];
 bool checkN[MAX_N], checkM[MAX_N];
 
-bool dfsM(int m, int dst);
-bool dfsN(int n, int dst) {
+bool dfsM(int m, int dst, int cnt);
+bool dfsN(int n, int dst, int cnt) {
+    if(cnt < 0) return false;
     checkN[n] = true;
     for(int i = 0; i < M; i++) {
         if(checkM[i] || res[n][i] == 0) continue;
         res[n][i]--;
-        if(dfsM(i, dst)) {
+        if(dfsM(i, dst, cnt-1)) {
             checkN[n] = false;
             return true;
         }
@@ -26,7 +27,8 @@ bool dfsN(int n, int dst) {
     return false;
 }
 
-bool dfsM(int m, int dst) {
+bool dfsM(int m, int dst, int cnt) {
+    if(cnt < 0) return false;
     checkM[m] = true;
     if(m == dst) {
         checkM[m] = false;
@@ -40,7 +42,7 @@ bool dfsM(int m, int dst) {
     for(int i = 0; i < N; i++) {
         if(checkN[i] || res[i][m] == 1) continue;
         res[i][m]++;
-        if(dfsN(i, dst)) {
+        if(dfsN(i, dst, cnt-1)) {
             checkM[m] = false;
             return true;
         }
@@ -81,7 +83,7 @@ int main() {
     // Fine Maximum Flow
     for(int i = 0; i < N; i++) {
         while(resS[i] > 0) {
-            if(dfsN(i, -1)) {
+            if(dfsN(i, -1, 9)) {
                 resS[i]--;
             }
             else {
@@ -98,7 +100,7 @@ int main() {
             if(res[i][j] == 1) continue;
             for(int k = j+1; k < M; k++) {
                 if(res[i][k] == 0) continue;
-                if(dfsM(k, j)) {
+                if(dfsM(k, j, 200)) {
                     res[i][j] = 1;
                     break;
                 }
